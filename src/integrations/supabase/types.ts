@@ -14,7 +14,395 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      event_bookings: {
+        Row: {
+          booking_status: Database["public"]["Enums"]["booking_status"] | null
+          created_at: string | null
+          event_id: string
+          id: string
+          quantity: number
+          total_price: number
+          user_id: string
+        }
+        Insert: {
+          booking_status?: Database["public"]["Enums"]["booking_status"] | null
+          created_at?: string | null
+          event_id: string
+          id?: string
+          quantity?: number
+          total_price: number
+          user_id: string
+        }
+        Update: {
+          booking_status?: Database["public"]["Enums"]["booking_status"] | null
+          created_at?: string | null
+          event_id?: string
+          id?: string
+          quantity?: number
+          total_price?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_bookings_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      events: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          event_date: string
+          event_type: string
+          id: string
+          image_url: string | null
+          price: number
+          title: string
+          venue: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          event_date: string
+          event_type: string
+          id?: string
+          image_url?: string | null
+          price: number
+          title: string
+          venue: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          event_date?: string
+          event_type?: string
+          id?: string
+          image_url?: string | null
+          price?: number
+          title?: string
+          venue?: string
+        }
+        Relationships: []
+      }
+      food_items: {
+        Row: {
+          category: string
+          created_at: string | null
+          description: string | null
+          id: string
+          image_url: string | null
+          is_available: boolean | null
+          name: string
+          price: number
+          restaurant_id: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_available?: boolean | null
+          name: string
+          price: number
+          restaurant_id?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_available?: boolean | null
+          name?: string
+          price?: number
+          restaurant_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "food_items_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      food_order_items: {
+        Row: {
+          created_at: string | null
+          food_item_id: string
+          id: string
+          order_id: string
+          price: number
+          quantity: number
+        }
+        Insert: {
+          created_at?: string | null
+          food_item_id: string
+          id?: string
+          order_id: string
+          price: number
+          quantity?: number
+        }
+        Update: {
+          created_at?: string | null
+          food_item_id?: string
+          id?: string
+          order_id?: string
+          price?: number
+          quantity?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "food_order_items_food_item_id_fkey"
+            columns: ["food_item_id"]
+            isOneToOne: false
+            referencedRelation: "food_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "food_order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "food_orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      food_orders: {
+        Row: {
+          created_at: string | null
+          delivery_address: string | null
+          delivery_type: string
+          id: string
+          order_status: Database["public"]["Enums"]["order_status"] | null
+          restaurant_id: string
+          total_price: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          delivery_address?: string | null
+          delivery_type: string
+          id?: string
+          order_status?: Database["public"]["Enums"]["order_status"] | null
+          restaurant_id: string
+          total_price: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          delivery_address?: string | null
+          delivery_type?: string
+          id?: string
+          order_status?: Database["public"]["Enums"]["order_status"] | null
+          restaurant_id?: string
+          total_price?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "food_orders_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      movie_bookings: {
+        Row: {
+          booking_date: string
+          booking_status: Database["public"]["Enums"]["booking_status"] | null
+          created_at: string | null
+          id: string
+          movie_id: string
+          seat_numbers: string[]
+          seat_type: Database["public"]["Enums"]["seat_type"]
+          show_time: string
+          total_price: number
+          user_id: string
+        }
+        Insert: {
+          booking_date: string
+          booking_status?: Database["public"]["Enums"]["booking_status"] | null
+          created_at?: string | null
+          id?: string
+          movie_id: string
+          seat_numbers: string[]
+          seat_type: Database["public"]["Enums"]["seat_type"]
+          show_time: string
+          total_price: number
+          user_id: string
+        }
+        Update: {
+          booking_date?: string
+          booking_status?: Database["public"]["Enums"]["booking_status"] | null
+          created_at?: string | null
+          id?: string
+          movie_id?: string
+          seat_numbers?: string[]
+          seat_type?: Database["public"]["Enums"]["seat_type"]
+          show_time?: string
+          total_price?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "movie_bookings_movie_id_fkey"
+            columns: ["movie_id"]
+            isOneToOne: false
+            referencedRelation: "movies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      movies: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          duration: number
+          genre: string
+          id: string
+          image_url: string | null
+          rating: number | null
+          release_date: string | null
+          title: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          duration: number
+          genre: string
+          id?: string
+          image_url?: string | null
+          rating?: number | null
+          release_date?: string | null
+          title: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          duration?: number
+          genre?: string
+          id?: string
+          image_url?: string | null
+          rating?: number | null
+          release_date?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
+      payments: {
+        Row: {
+          amount: number
+          booking_id: string
+          booking_type: string
+          created_at: string | null
+          currency: string | null
+          id: string
+          razorpay_order_id: string
+          razorpay_payment_id: string | null
+          razorpay_signature: string | null
+          status: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          booking_id: string
+          booking_type: string
+          created_at?: string | null
+          currency?: string | null
+          id?: string
+          razorpay_order_id: string
+          razorpay_payment_id?: string | null
+          razorpay_signature?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          booking_id?: string
+          booking_type?: string
+          created_at?: string | null
+          currency?: string | null
+          id?: string
+          razorpay_order_id?: string
+          razorpay_payment_id?: string | null
+          razorpay_signature?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string | null
+          email: string | null
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id: string
+          phone?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      restaurants: {
+        Row: {
+          created_at: string | null
+          cuisine: string
+          delivery_time: string | null
+          id: string
+          image_url: string | null
+          is_cinema_vendor: boolean | null
+          name: string
+          rating: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          cuisine: string
+          delivery_time?: string | null
+          id?: string
+          image_url?: string | null
+          is_cinema_vendor?: boolean | null
+          name: string
+          rating?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          cuisine?: string
+          delivery_time?: string | null
+          id?: string
+          image_url?: string | null
+          is_cinema_vendor?: boolean | null
+          name?: string
+          rating?: number | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +411,9 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      booking_status: "pending" | "confirmed" | "cancelled"
+      order_status: "pending" | "processing" | "completed" | "cancelled"
+      seat_type: "standard" | "premium" | "vip"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +540,10 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      booking_status: ["pending", "confirmed", "cancelled"],
+      order_status: ["pending", "processing", "completed", "cancelled"],
+      seat_type: ["standard", "premium", "vip"],
+    },
   },
 } as const

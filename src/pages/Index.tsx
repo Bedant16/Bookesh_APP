@@ -6,12 +6,54 @@ import { EventCard } from "@/components/EventCard";
 import { FoodCard } from "@/components/FoodCard";
 import { Cart } from "@/components/Cart";
 import { Button } from "@/components/ui/button";
-import { Play } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
+import { HeroCarousel } from "@/components/HeroCarousel";
 import heroImage from "@/assets/galactic-heist-hero.jpg";
+import concertImage from "@/assets/concert-event.jpg";
 
 const Index = () => {
   const { items, removeItem, isCartOpen, setIsCartOpen } = useCart();
+
+  const heroItems = [
+    {
+      id: "hero-1",
+      type: "movie" as const,
+      title: "Galactic Heist",
+      description: "A thrilling sci-fi adventure that takes you beyond the stars. Experience the ultimate heist in space.",
+      imageUrl: heroImage,
+      genre: "Sci-Fi, Action",
+      link: "/movie/1",
+    },
+    {
+      id: "hero-2",
+      type: "event" as const,
+      title: "Rock Legends Live",
+      description: "An unforgettable night with the greatest rock bands. Experience live music like never before.",
+      imageUrl: concertImage,
+      date: "Dec 25, 2024",
+      venue: "Arena Stadium",
+      link: "/events",
+    },
+    {
+      id: "hero-3",
+      type: "movie" as const,
+      title: "Urban Legends",
+      description: "Uncover the mysteries hidden in the city. A gripping thriller that will keep you on the edge of your seat.",
+      imageUrl: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1920&h=1080&fit=crop",
+      genre: "Thriller, Mystery",
+      link: "/movie/2",
+    },
+    {
+      id: "hero-4",
+      type: "event" as const,
+      title: "Jazz Evening",
+      description: "Smooth jazz performances in an intimate setting. Perfect for a sophisticated night out.",
+      imageUrl: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=1920&h=1080&fit=crop",
+      date: "Jan 15, 2025",
+      venue: "Blue Note Club",
+      link: "/events",
+    },
+  ];
 
   const featuredMovies = [
     {
@@ -120,34 +162,8 @@ const Index = () => {
           <Sidebar />
           
           <main className="flex-1 space-y-12">
-            {/* Hero Section */}
-            <section className="relative h-[500px] rounded-2xl overflow-hidden shadow-glow">
-              <img
-                src={heroImage}
-                alt="Galactic Heist"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-background via-background/50 to-transparent" />
-              <div className="absolute inset-0 flex items-center">
-                <div className="container max-w-2xl space-y-6 p-8">
-                  <h1 className="text-5xl font-bold text-foreground">Galactic Heist</h1>
-                  <p className="text-lg text-muted-foreground">
-                    A thrilling sci-fi adventure that takes you beyond the stars. Experience the ultimate heist in space.
-                  </p>
-                  <div className="flex gap-4">
-                    <Link to="/movie/1">
-                      <Button variant="hero" size="lg">
-                        <Play className="mr-2 h-5 w-5" />
-                        Book Tickets
-                      </Button>
-                    </Link>
-                    <Button variant="outline" size="lg">
-                      Order Food to Seat
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </section>
+            {/* Hero Carousel */}
+            <HeroCarousel items={heroItems} />
 
             {/* Featured Movies */}
             <section className="space-y-6">

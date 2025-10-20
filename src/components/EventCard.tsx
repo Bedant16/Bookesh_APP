@@ -1,6 +1,8 @@
 import { Calendar, MapPin, Clock } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/contexts/CartContext";
+import { useToast } from "@/hooks/use-toast";
 
 interface EventCardProps {
   id: string;
@@ -14,6 +16,26 @@ interface EventCardProps {
 }
 
 export const EventCard = ({ id, title, date, time, venue, type, imageUrl, price }: EventCardProps) => {
+  const { addItem, setIsCartOpen } = useCart();
+  const { toast } = useToast();
+
+  const handleBookTickets = () => {
+    const priceValue = parseInt(price.replace(/[^\d]/g, ""));
+    addItem({
+      id: `event-${id}`,
+      type: "event",
+      title,
+      details: `${date} • ${time} • ${venue}`,
+      price: priceValue,
+      quantity: 1,
+    });
+    toast({
+      title: "Added to cart",
+      description: `${title} ticket added to your cart`,
+    });
+    setIsCartOpen(true);
+  };
+
   return (
     <Card className="group overflow-hidden bg-gradient-card border-border hover:shadow-card transition-smooth">
       <div className="relative aspect-[16/9] overflow-hidden">
@@ -46,7 +68,7 @@ export const EventCard = ({ id, title, date, time, venue, type, imageUrl, price 
         </div>
         <div className="flex items-center justify-between">
           <span className="text-lg font-bold text-primary">{price}</span>
-          <Button variant="default" size="sm">
+          <Button variant="default" size="sm" onClick={handleBookTickets}>
             Book Tickets
           </Button>
         </div>

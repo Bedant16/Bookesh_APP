@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
@@ -8,11 +7,11 @@ import { FoodCard } from "@/components/FoodCard";
 import { Cart } from "@/components/Cart";
 import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
+import { useCart } from "@/contexts/CartContext";
 import heroImage from "@/assets/galactic-heist-hero.jpg";
 
 const Index = () => {
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState<any[]>([]);
+  const { items, removeItem, isCartOpen, setIsCartOpen } = useCart();
 
   const featuredMovies = [
     {
@@ -114,7 +113,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header cartItemsCount={cartItems.length} onCartClick={() => setIsCartOpen(true)} />
+      <Header cartItemsCount={items.length} onCartClick={() => setIsCartOpen(true)} />
       
       <div className="container py-6">
         <div className="flex gap-6">
@@ -210,8 +209,8 @@ const Index = () => {
       <Cart
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
-        items={cartItems}
-        onRemoveItem={(id) => setCartItems(cartItems.filter((item) => item.id !== id))}
+        items={items}
+        onRemoveItem={removeItem}
       />
     </div>
   );

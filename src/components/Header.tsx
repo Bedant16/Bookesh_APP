@@ -13,20 +13,20 @@ export const Header = ({ cartItemsCount = 0, onCartClick }: HeaderProps) => {
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center space-x-2">
-          <Film className="h-6 w-6 text-primary" />
-          <span className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+          <Film className="h-7 w-7 text-primary" />
+          <span className="text-2xl font-extrabold bg-gradient-primary bg-clip-text text-transparent">
             Bookesh
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center space-x-6">
-          <Link to="/movies" className="text-sm font-medium hover:text-primary transition-smooth">
+        <nav className="hidden md:flex items-center space-x-8">
+          <Link to="/movies" className="text-base font-bold hover:text-primary transition-smooth">
             Movies
           </Link>
-          <Link to="/events" className="text-sm font-medium hover:text-primary transition-smooth">
+          <Link to="/events" className="text-base font-bold hover:text-primary transition-smooth">
             Events
           </Link>
-          <Link to="/food" className="text-sm font-medium hover:text-primary transition-smooth">
+          <Link to="/food" className="text-base font-bold hover:text-primary transition-smooth">
             Food
           </Link>
         </nav>

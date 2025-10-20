@@ -1,12 +1,11 @@
-import { useState } from "react";
 import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
 import { MovieCard } from "@/components/MovieCard";
 import { Cart } from "@/components/Cart";
+import { useCart } from "@/contexts/CartContext";
 
 const Movies = () => {
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState<any[]>([]);
+  const { items, removeItem, isCartOpen, setIsCartOpen } = useCart();
 
   const movies = [
     {
@@ -61,7 +60,7 @@ const Movies = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header cartItemsCount={cartItems.length} onCartClick={() => setIsCartOpen(true)} />
+      <Header cartItemsCount={items.length} onCartClick={() => setIsCartOpen(true)} />
       
       <div className="container py-6">
         <div className="flex gap-6">
@@ -87,8 +86,8 @@ const Movies = () => {
       <Cart
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
-        items={cartItems}
-        onRemoveItem={(id) => setCartItems(cartItems.filter((item) => item.id !== id))}
+        items={items}
+        onRemoveItem={removeItem}
       />
     </div>
   );

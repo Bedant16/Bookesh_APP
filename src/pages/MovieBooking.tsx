@@ -3,8 +3,12 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ChevronLeft, Armchair } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import { Cart } from "@/components/Cart";
+import { ChevronLeft, Armchair, MapPin, Clock, Calendar, Check } from "lucide-react";
 import { toast } from "sonner";
+import { useCart } from "@/contexts/CartContext";
 
 type SeatType = "standard" | "premium" | "vip";
 type SeatStatus = "available" | "selected" | "occupied";
@@ -18,10 +22,74 @@ interface Seat {
   price: number;
 }
 
+interface Cinema {
+  id: string;
+  name: string;
+  location: string;
+  distance: string;
+  showtimes: string[];
+}
+
+interface Movie {
+  id: string;
+  title: string;
+  genre: string;
+  duration: string;
+  imageUrl: string;
+}
+
 const MovieBooking = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { items, addItem, removeItem, isCartOpen, setIsCartOpen } = useCart();
+  const [activeTab, setActiveTab] = useState("cinema");
+  const [selectedCinema, setSelectedCinema] = useState<Cinema | null>(null);
+  const [selectedShowtime, setSelectedShowtime] = useState<string>("");
+  const [selectedDate, setSelectedDate] = useState<string>("Today");
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
+
+  // Mock movie data
+  const movie: Movie = {
+    id: id || "1",
+    title: "Galactic Heist",
+    genre: "Sci-Fi, Action",
+    duration: "2h 30m",
+    imageUrl: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400&h=600&fit=crop",
+  };
+
+  // Mock cinema data
+  const cinemas: Cinema[] = [
+    {
+      id: "1",
+      name: "Cineplex Downtown",
+      location: "123 Main Street, Downtown",
+      distance: "2.5 km",
+      showtimes: ["10:00 AM", "1:30 PM", "4:45 PM", "8:00 PM", "10:30 PM"],
+    },
+    {
+      id: "2",
+      name: "Metro IMAX",
+      location: "456 Commerce Plaza, City Center",
+      distance: "3.8 km",
+      showtimes: ["11:00 AM", "2:15 PM", "5:30 PM", "9:00 PM"],
+    },
+    {
+      id: "3",
+      name: "Star Cinemas",
+      location: "789 Park Avenue, Uptown",
+      distance: "5.2 km",
+      showtimes: ["10:30 AM", "1:00 PM", "4:00 PM", "7:15 PM", "10:00 PM"],
+    },
+    {
+      id: "4",
+      name: "Royal Theatre",
+      location: "321 Boulevard Street, West End",
+      distance: "4.1 km",
+      showtimes: ["12:00 PM", "3:30 PM", "6:45 PM", "9:30 PM"],
+    },
+  ];
+
+  const dates = ["Today", "Tomorrow", "Dec 22", "Dec 23", "Dec 24"];
 
   const rows = ["A", "B", "C", "D", "E", "F", "G", "H"];
   const seatsPerRow = 12;
@@ -88,18 +156,39 @@ const MovieBooking = () => {
     return sum + (seat?.price || 0);
   }, 0);
 
+  const handleCinemaSelect = (cinema: Cinema, showtime: string) => {
+    setSelectedCinema(cinema);
+    setSelectedShowtime(showtime);
+    setActiveTab("seats");
+  };
+
   const handleBooking = () => {
     if (selectedSeats.length === 0) {
       toast.error("Please select at least one seat");
       return;
     }
-    toast.success(`${selectedSeats.length} seats booked successfully!`);
-    setTimeout(() => navigate("/"), 1500);
+    if (!selectedCinema || !selectedShowtime) {
+      toast.error("Please select a cinema and showtime");
+      return;
+    }
+
+    // Add to cart
+    addItem({
+      id: `movie-${id}-${Date.now()}`,
+      type: "movie",
+      title: movie.title,
+      details: `${selectedCinema.name} • ${selectedDate} • ${selectedShowtime} • ${selectedSeats.join(", ")}`,
+      price: totalPrice,
+      quantity: 1,
+    });
+
+    toast.success(`${selectedSeats.length} seats added to cart!`);
+    setIsCartOpen(true);
   };
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <Header cartItemsCount={items.length} onCartClick={() => setIsCartOpen(true)} />
       
       <div className="container py-6 max-w-6xl">
         <Button
@@ -112,12 +201,113 @@ const MovieBooking = () => {
         </Button>
 
         <div className="space-y-6">
-          <div>
-            <h1 className="text-3xl font-bold text-foreground mb-2">Galactic Heist</h1>
-            <p className="text-muted-foreground">Select your seats</p>
+          {/* Movie Info Header */}
+          <div className="flex items-start gap-6">
+            <img
+              src={movie.imageUrl}
+              alt={movie.title}
+              className="w-32 h-48 rounded-lg object-cover shadow-card"
+            />
+            <div className="flex-1">
+              <h1 className="text-3xl font-bold text-foreground mb-2">{movie.title}</h1>
+              <p className="text-muted-foreground mb-4">{movie.genre} • {movie.duration}</p>
+              {selectedCinema && (
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant="secondary" className="flex items-center gap-1">
+                    <MapPin className="h-3 w-3" />
+                    {selectedCinema.name}
+                  </Badge>
+                  {selectedShowtime && (
+                    <Badge variant="secondary" className="flex items-center gap-1">
+                      <Clock className="h-3 w-3" />
+                      {selectedShowtime}
+                    </Badge>
+                  )}
+                  <Badge variant="secondary" className="flex items-center gap-1">
+                    <Calendar className="h-3 w-3" />
+                    {selectedDate}
+                  </Badge>
+                </div>
+              )}
+            </div>
           </div>
 
-          <Card className="p-8 bg-gradient-card border-border">
+          {/* Tabs for Cinema Selection and Seat Selection */}
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="grid w-full grid-cols-2 mb-6">
+              <TabsTrigger value="cinema" className="flex items-center gap-2">
+                {selectedCinema && <Check className="h-4 w-4" />}
+                Select Cinema & Time
+              </TabsTrigger>
+              <TabsTrigger value="seats" disabled={!selectedCinema}>
+                {selectedSeats.length > 0 && <Check className="h-4 w-4" />}
+                Select Seats
+              </TabsTrigger>
+            </TabsList>
+
+            {/* Cinema Selection Tab */}
+            <TabsContent value="cinema" className="space-y-4">
+              {/* Date Selection */}
+              <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
+                {dates.map((date) => (
+                  <Button
+                    key={date}
+                    variant={selectedDate === date ? "default" : "outline"}
+                    onClick={() => setSelectedDate(date)}
+                    className="flex-shrink-0"
+                  >
+                    {date}
+                  </Button>
+                ))}
+              </div>
+
+              {/* Cinema List */}
+              <div className="space-y-4">
+                {cinemas.map((cinema) => (
+                  <Card key={cinema.id} className="p-6 bg-gradient-card border-border hover:shadow-card transition-smooth">
+                    <div className="space-y-4">
+                      <div className="flex items-start justify-between">
+                        <div className="space-y-2">
+                          <h3 className="text-xl font-bold text-foreground">{cinema.name}</h3>
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <MapPin className="h-4 w-4" />
+                            <span>{cinema.location}</span>
+                          </div>
+                          <Badge variant="outline" className="text-xs">
+                            {cinema.distance} away
+                          </Badge>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <p className="text-sm font-medium text-foreground">Available Showtimes:</p>
+                        <div className="flex flex-wrap gap-2">
+                          {cinema.showtimes.map((showtime) => (
+                            <Button
+                              key={showtime}
+                              variant={
+                                selectedCinema?.id === cinema.id && selectedShowtime === showtime
+                                  ? "default"
+                                  : "outline"
+                              }
+                              size="sm"
+                              onClick={() => handleCinemaSelect(cinema, showtime)}
+                              className="min-w-[100px]"
+                            >
+                              {showtime}
+                            </Button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+
+            {/* Seat Selection Tab */}
+            <TabsContent value="seats">
+              <Card className="p-8 bg-gradient-card border-border">
             {/* Screen */}
             <div className="mb-8">
               <div className="h-2 bg-gradient-primary rounded-full mb-2" />
@@ -188,10 +378,19 @@ const MovieBooking = () => {
               >
                 Proceed to Payment
               </Button>
-            </div>
-          </Card>
+                </div>
+              </Card>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
+
+      <Cart
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        items={items}
+        onRemoveItem={removeItem}
+      />
     </div>
   );
 };

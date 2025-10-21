@@ -14,7 +14,7 @@ const Movies = () => {
       rating: 8.5,
       duration: "2h 30m",
       genre: "Comedy, Romance",
-      imageUrl: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&h=1200&fit=crop",
+      imageUrl: "/public/dude.jpg",
     },
     {
       id: "2",
@@ -22,7 +22,7 @@ const Movies = () => {
       rating: 7.8,
       duration: "2h 15m",
       genre: "Drama",
-      imageUrl: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.forbes.com%2Fsites%2Ftimlammers%2F2025%2F06%2F17%2Ff1-the-movie-reviews-does-brad-pitt-power-formula-1-racing-thriller%2F&psig=AOvVaw3lJAn2nW0JRV5EBh-5R0lW&ust=1761128425591000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCPjo9uaItZADFQAAAAAdAAAAABAE",
+      imageUrl: "/public/f1.jpg",
     },
     {
       id: "3",

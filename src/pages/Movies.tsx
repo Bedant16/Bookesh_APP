@@ -14,7 +14,7 @@ const Movies = () => {
       rating: 8.5,
       duration: "2h 30m",
       genre: "Comedy, Romance",
-      imageUrl: "/dude.jpg",
+      imageUrl: "/dude1.jpg",
     },
     {
       id: "2",

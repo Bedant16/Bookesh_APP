@@ -18,10 +18,10 @@ const Index = () => {
     {
       id: "hero-1",
       type: "movie" as const,
-      title: "Galactic Heist",
-      description: "A thrilling sci-fi adventure that takes you beyond the stars. Experience the ultimate heist in space.",
-      imageUrl: heroImage,
-      genre: "Sci-Fi, Action",
+      title: "DUDE",
+      description: "Childhood friends Agan and Kural are inseparable. When Kural encounters romantic troubles, Agan must balance his hidden feelings for her with his desire to ensure her happiness.",
+      imageUrl: "/dude1.jpg",
+      genre: "Romance, Comedy",
       link: "/movie/1",
     },
     {

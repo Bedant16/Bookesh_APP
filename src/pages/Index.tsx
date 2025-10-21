@@ -29,7 +29,7 @@ const Index = () => {
       type: "event" as const,
       title: "Circus Maximus",
       description: "SQUADDDDD.Cactus Jack is coming to India.",
-      imageUrl: "travish.jpg"
+      imageUrl: "/travish.jpg"
       date: "Nov19, 2025",
       venue: "Mahalaxmi Race Course, Mumbai",
       link: "/events",

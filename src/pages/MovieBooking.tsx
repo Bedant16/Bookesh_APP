@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Cart } from "@/components/Cart";
-import { ChevronLeft, Armchair, MapPin, Clock, Calendar, Check } from "lucide-react";
+import { ChevronLeft, Armchair, MapPin, Clock, Calendar, Check, Plus, Minus } from "lucide-react";
 import { toast } from "sonner";
 import { useCart } from "@/contexts/CartContext";
 
@@ -49,6 +49,8 @@ const MovieBooking = () => {
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
   const [wantsFood, setWantsFood] = useState<boolean | null>(null);
   const [selectedRestaurant, setSelectedRestaurant] = useState<string | null>(null);
+  const [showMenu, setShowMenu] = useState(false);
+  const [foodQuantities, setFoodQuantities] = useState<Record<string, number>>({});
 
   // Mock movie data
   const movie: Movie = {
@@ -92,6 +94,34 @@ const MovieBooking = () => {
   ];
 
   const dates = ["Today", "Tomorrow", "Dec 22", "Dec 23", "Dec 24"];
+
+  // Mock restaurant menu data
+  const restaurantMenus: Record<string, Array<{ id: string; name: string; price: number; image: string; description: string }>> = {
+    "Burger Palace": [
+      { id: "bp1", name: "Classic Burger", price: 250, image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300&h=200&fit=crop", description: "Juicy beef patty with cheese" },
+      { id: "bp2", name: "Chicken Burger", price: 230, image: "https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=300&h=200&fit=crop", description: "Crispy chicken fillet" },
+      { id: "bp3", name: "Veggie Burger", price: 200, image: "https://images.unsplash.com/photo-1520072959219-c595dc870360?w=300&h=200&fit=crop", description: "Plant-based patty" },
+      { id: "bp4", name: "French Fries", price: 100, image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=300&h=200&fit=crop", description: "Crispy golden fries" },
+    ],
+    "Pizza Corner": [
+      { id: "pc1", name: "Margherita Pizza", price: 350, image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=300&h=200&fit=crop", description: "Classic tomato and mozzarella" },
+      { id: "pc2", name: "Pepperoni Pizza", price: 450, image: "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=300&h=200&fit=crop", description: "Loaded with pepperoni" },
+      { id: "pc3", name: "Veggie Supreme", price: 400, image: "https://images.unsplash.com/photo-1571997478779-2adcbbe9ab2f?w=300&h=200&fit=crop", description: "Fresh vegetables galore" },
+      { id: "pc4", name: "Garlic Bread", price: 150, image: "https://images.unsplash.com/photo-1573140401552-3fab0b24f9ae?w=300&h=200&fit=crop", description: "Buttery garlic bread" },
+    ],
+    "Snack Hub": [
+      { id: "sh1", name: "Popcorn (Large)", price: 200, image: "https://images.unsplash.com/photo-1585647347483-22b66260dfff?w=300&h=200&fit=crop", description: "Buttered or salted" },
+      { id: "sh2", name: "Nachos", price: 250, image: "https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?w=300&h=200&fit=crop", description: "With cheese dip" },
+      { id: "sh3", name: "Hot Dog", price: 150, image: "https://images.unsplash.com/photo-1612392062422-ef19b42f74df?w=300&h=200&fit=crop", description: "Classic cinema hot dog" },
+      { id: "sh4", name: "Soft Drink", price: 80, image: "https://images.unsplash.com/photo-1581006852262-e4307cf6283a?w=300&h=200&fit=crop", description: "Chilled beverages" },
+    ],
+    "Asian Delights": [
+      { id: "ad1", name: "Chicken Noodles", price: 280, image: "https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?w=300&h=200&fit=crop", description: "Stir-fried noodles" },
+      { id: "ad2", name: "Spring Rolls", price: 180, image: "https://images.unsplash.com/photo-1560611588-0c4e3c7e5b51?w=300&h=200&fit=crop", description: "Crispy vegetable rolls" },
+      { id: "ad3", name: "Fried Rice", price: 250, image: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=300&h=200&fit=crop", description: "Classic fried rice" },
+      { id: "ad4", name: "Dumplings", price: 200, image: "https://images.unsplash.com/photo-1563245372-f21724e3856d?w=300&h=200&fit=crop", description: "Steamed dumplings" },
+    ],
+  };
 
   const rows = ["A", "B", "C", "D", "E", "F", "G", "H"];
   const seatsPerRow = 12;
@@ -182,7 +212,51 @@ const MovieBooking = () => {
 
   const handleRestaurantSelect = (restaurantName: string) => {
     setSelectedRestaurant(restaurantName);
-    toast.success(`You can now add items from ${restaurantName} to your cart`);
+    setShowMenu(true);
+    setFoodQuantities({});
+    toast.success(`Browse ${restaurantName} menu and add items`);
+  };
+
+  const updateFoodQuantity = (itemId: string, delta: number) => {
+    setFoodQuantities(prev => {
+      const current = prev[itemId] || 0;
+      const newQuantity = Math.max(0, current + delta);
+      if (newQuantity === 0) {
+        const { [itemId]: _, ...rest } = prev;
+        return rest;
+      }
+      return { ...prev, [itemId]: newQuantity };
+    });
+  };
+
+  const addFoodToCart = () => {
+    if (!selectedRestaurant) return;
+    
+    const menuItems = restaurantMenus[selectedRestaurant];
+    let itemsAdded = 0;
+
+    Object.entries(foodQuantities).forEach(([itemId, quantity]) => {
+      const item = menuItems.find(m => m.id === itemId);
+      if (item && quantity > 0) {
+        addItem({
+          id: `food-${itemId}-${Date.now()}-${Math.random()}`,
+          type: "food",
+          title: item.name,
+          details: `${selectedRestaurant} • Cinema Delivery`,
+          price: item.price,
+          quantity,
+          deliveryType: "cinema",
+        });
+        itemsAdded++;
+      }
+    });
+
+    if (itemsAdded > 0) {
+      toast.success(`${itemsAdded} food item(s) added to cart!`);
+      setShowMenu(false);
+    } else {
+      toast.error("Please select at least one item");
+    }
   };
 
   const handleFinalBooking = () => {
@@ -434,54 +508,126 @@ const MovieBooking = () => {
                 </Card>
               ) : wantsFood ? (
                 <div className="space-y-6">
-                  <Card className="p-6 bg-gradient-card border-border">
-                    <h3 className="text-xl font-bold text-foreground mb-4">Choose a Restaurant</h3>
-                    <p className="text-sm text-muted-foreground mb-6">Select a restaurant to order food from</p>
-                    
-                    <div className="grid gap-4 md:grid-cols-2">
-                      {[
-                        { name: "Burger Palace", cuisine: "Fast Food", image: "https://images.unsplash.com/photo-1550547660-d9450f859349?w=400&h=300&fit=crop" },
-                        { name: "Pizza Corner", cuisine: "Italian", image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop" },
-                        { name: "Snack Hub", cuisine: "Snacks & Beverages", image: "https://images.unsplash.com/photo-1621939514649-280e2ee25f60?w=400&h=300&fit=crop" },
-                        { name: "Asian Delights", cuisine: "Asian Fusion", image: "https://images.unsplash.com/photo-1617093727343-374698b1b08d?w=400&h=300&fit=crop" },
-                      ].map((restaurant) => (
-                        <Card 
-                          key={restaurant.name}
-                          className={`p-4 cursor-pointer transition-smooth hover:shadow-card ${
-                            selectedRestaurant === restaurant.name ? "border-primary" : "border-border"
-                          }`}
-                          onClick={() => handleRestaurantSelect(restaurant.name)}
-                        >
-                          <img 
-                            src={restaurant.image} 
-                            alt={restaurant.name}
-                            className="w-full h-32 object-cover rounded-lg mb-3"
-                          />
-                          <h4 className="font-bold text-foreground">{restaurant.name}</h4>
-                          <p className="text-sm text-muted-foreground">{restaurant.cuisine}</p>
-                          {selectedRestaurant === restaurant.name && (
-                            <Badge className="mt-2">Selected</Badge>
-                          )}
-                        </Card>
-                      ))}
-                    </div>
-
-                    {selectedRestaurant && (
-                      <div className="mt-6 p-4 bg-background/50 rounded-lg">
-                        <p className="text-sm text-muted-foreground mb-3">
-                          Add food items to your cart, then proceed to payment
-                        </p>
+                  {!showMenu ? (
+                    <Card className="p-6 bg-gradient-card border-border">
+                      <h3 className="text-xl font-bold text-foreground mb-4">Choose a Restaurant</h3>
+                      <p className="text-sm text-muted-foreground mb-6">Select a restaurant to order food from</p>
+                      
+                      <div className="grid gap-4 md:grid-cols-2">
+                        {[
+                          { name: "Burger Palace", cuisine: "Fast Food", image: "https://images.unsplash.com/photo-1550547660-d9450f859349?w=400&h=300&fit=crop" },
+                          { name: "Pizza Corner", cuisine: "Italian", image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop" },
+                          { name: "Snack Hub", cuisine: "Snacks & Beverages", image: "https://images.unsplash.com/photo-1621939514649-280e2ee25f60?w=400&h=300&fit=crop" },
+                          { name: "Asian Delights", cuisine: "Asian Fusion", image: "https://images.unsplash.com/photo-1617093727343-374698b1b08d?w=400&h=300&fit=crop" },
+                        ].map((restaurant) => (
+                          <Card 
+                            key={restaurant.name}
+                            className="p-4 cursor-pointer transition-smooth hover:shadow-card border-border hover:border-primary"
+                            onClick={() => handleRestaurantSelect(restaurant.name)}
+                          >
+                            <img 
+                              src={restaurant.image} 
+                              alt={restaurant.name}
+                              className="w-full h-32 object-cover rounded-lg mb-3"
+                            />
+                            <h4 className="font-bold text-foreground">{restaurant.name}</h4>
+                            <p className="text-sm text-muted-foreground">{restaurant.cuisine}</p>
+                          </Card>
+                        ))}
+                      </div>
+                    </Card>
+                  ) : (
+                    <Card className="p-6 bg-gradient-card border-border">
+                      <div className="flex items-center justify-between mb-6">
+                        <div>
+                          <h3 className="text-xl font-bold text-foreground">{selectedRestaurant} Menu</h3>
+                          <p className="text-sm text-muted-foreground">Add items to your cinema seat order</p>
+                        </div>
                         <Button
-                          variant="default"
-                          size="lg"
-                          className="w-full"
-                          onClick={handleFinalBooking}
+                          variant="outline"
+                          onClick={() => setShowMenu(false)}
                         >
-                          Proceed to Payment
+                          Change Restaurant
                         </Button>
                       </div>
-                    )}
-                  </Card>
+
+                      <div className="grid gap-4 md:grid-cols-2 mb-6">
+                        {selectedRestaurant && restaurantMenus[selectedRestaurant]?.map((item) => (
+                          <Card key={item.id} className="p-4 border-border">
+                            <img 
+                              src={item.image} 
+                              alt={item.name}
+                              className="w-full h-32 object-cover rounded-lg mb-3"
+                            />
+                            <h4 className="font-bold text-foreground">{item.name}</h4>
+                            <p className="text-sm text-muted-foreground mb-2">{item.description}</p>
+                            <div className="flex items-center justify-between">
+                              <span className="text-lg font-bold text-primary">₹{item.price}</span>
+                              <div className="flex items-center gap-2">
+                                {(foodQuantities[item.id] || 0) === 0 ? (
+                                  <Button
+                                    size="sm"
+                                    onClick={() => updateFoodQuantity(item.id, 1)}
+                                  >
+                                    Add
+                                  </Button>
+                                ) : (
+                                  <div className="flex items-center gap-2">
+                                    <Button
+                                      size="icon"
+                                      variant="outline"
+                                      className="h-8 w-8"
+                                      onClick={() => updateFoodQuantity(item.id, -1)}
+                                    >
+                                      <Minus className="h-4 w-4" />
+                                    </Button>
+                                    <span className="w-8 text-center font-semibold text-foreground">
+                                      {foodQuantities[item.id]}
+                                    </span>
+                                    <Button
+                                      size="icon"
+                                      variant="outline"
+                                      className="h-8 w-8"
+                                      onClick={() => updateFoodQuantity(item.id, 1)}
+                                    >
+                                      <Plus className="h-4 w-4" />
+                                    </Button>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </Card>
+                        ))}
+                      </div>
+
+                      <div className="bg-background/50 rounded-lg p-4 space-y-4">
+                        <div className="flex justify-between items-center">
+                          <span className="text-muted-foreground">Items Selected:</span>
+                          <span className="font-semibold text-foreground">
+                            {Object.values(foodQuantities).reduce((sum, qty) => sum + qty, 0)}
+                          </span>
+                        </div>
+                        <div className="flex gap-3">
+                          <Button
+                            variant="default"
+                            size="lg"
+                            className="flex-1"
+                            onClick={addFoodToCart}
+                            disabled={Object.keys(foodQuantities).length === 0}
+                          >
+                            Add to Cart
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="lg"
+                            onClick={handleFinalBooking}
+                          >
+                            Skip & Pay
+                          </Button>
+                        </div>
+                      </div>
+                    </Card>
+                  )}
                 </div>
               ) : (
                 <Card className="p-8 bg-gradient-card border-border">

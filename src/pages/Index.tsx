@@ -20,7 +20,7 @@ const Index = () => {
       type: "movie" as const,
       title: "DUDE",
       description: "Childhood friends Agan and Kural are inseparable. When Kural encounters romantic troubles, Agan must balance his hidden feelings for her with his desire to ensure her happiness.",
-      imageUrl: "/dude1.jpg",
+      imageUrl: "/dudeh.jpg",
       genre: "Romance, Comedy",
       link: "/movie/1",
     },

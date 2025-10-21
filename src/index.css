@@ -8,7 +8,7 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Black & Purple Minimalistic Aesthetic Theme */
+    /* Black & Purple with Blue/Red Gradient Aesthetic */
     --background: 270 20% 6%;
     --foreground: 0 0% 96%;
 
@@ -45,12 +45,14 @@ All colors MUST be HSL.
 
     --radius: 0.5rem;
 
-    --gradient-hero: linear-gradient(135deg, hsl(270 20% 6%) 0%, hsl(270 15% 10%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(270 15% 10%) 0%, hsl(270 18% 8%) 100%);
-    --gradient-primary: linear-gradient(135deg, hsl(270 85% 68%) 0%, hsl(280 75% 62%) 100%);
+    /* Multi-color gradients: Purple → Blue → Red */
+    --gradient-hero: linear-gradient(135deg, hsl(270 20% 6%) 0%, hsl(250 25% 10%) 50%, hsl(270 15% 8%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(270 15% 10%) 0%, hsl(260 18% 12%) 50%, hsl(270 12% 9%) 100%);
+    --gradient-primary: linear-gradient(120deg, hsl(270 85% 68%) 0%, hsl(250 80% 65%) 40%, hsl(340 75% 60%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(280 75% 62%) 0%, hsl(220 70% 58%) 50%, hsl(350 70% 58%) 100%);
     
-    --shadow-glow: 0 0 40px hsl(270 85% 68% / 0.25);
-    --shadow-card: 0 10px 40px -10px hsl(270 85% 68% / 0.2);
+    --shadow-glow: 0 0 50px hsl(270 85% 68% / 0.3), 0 0 80px hsl(250 80% 65% / 0.15);
+    --shadow-card: 0 10px 40px -10px hsl(270 85% 68% / 0.25), 0 0 60px hsl(250 70% 60% / 0.1);
     
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }

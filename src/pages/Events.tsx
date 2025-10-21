@@ -15,7 +15,7 @@ const Events = () => {
       time: "7:00 PM",
       venue: "Mahalaxmi Race Course, Mumbai",
       type: "Concert",
-      imageUrl: "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=800&h=600&fit=crop",
+      imageUrl: "/travis.jpg",
       price: "₹6,999",
     },
     {
@@ -25,7 +25,7 @@ const Events = () => {
       time: "6:30 PM",
       venue: "Eden Gardens, Kolkata",
       type: "Sports",
-      imageUrl: "https://images.unsplash.com/photo-1527224857830-43a7acc85260?w=800&h=600&fit=crop",
+      imageUrl: "/messi.jpg",
       price: "₹7999",
     },
     {
@@ -35,7 +35,7 @@ const Events = () => {
       time: "7:00 PM",
       venue: "Mahalaxmi Race Course, Mumbai",
       type: "Concert",
-      imageUrl: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=600&fit=crop",
+      imageUrl: "/lolla.jpg",
       price: "₹4999",
     },
     {
@@ -45,7 +45,7 @@ const Events = () => {
       time: "6:00 PM",
       venue: "DY Patil, Navi Mumbai",
       type: "Concert",
-      imageUrl: "https://images.unsplash.com/photo-1503095396549-807759245b35?w=800&h=600&fit=crop",
+      imageUrl: "/rollingloud.jpg",
       price: "₹6,299",
     },
     {
@@ -55,7 +55,7 @@ const Events = () => {
       time: "6:30 PM",
       venue: "Chennai",
       type: "Stand up",
-      imageUrl: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=800&h=600&fit=crop",
+      imageUrl: "/virdas.jpg",
       price: "₹1,499",
     },
     {
@@ -65,7 +65,7 @@ const Events = () => {
       time: "5:00 PM",
       venue: "Goa",
       type: "Event",
-      imageUrl: "https://images.unsplash.com/photo-1585699324551-f6c309eedeca?w=800&h=600&fit=crop",
+      imageUrl: "/re.jpg",
       price: "₹999",
     },
   ];

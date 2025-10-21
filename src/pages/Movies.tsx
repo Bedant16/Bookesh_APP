@@ -18,15 +18,15 @@ const Movies = () => {
     },
     {
       id: "2",
-      title: "Urban Legends",
+      title: "F1 The Movie",
       rating: 7.8,
       duration: "2h 15m",
-      genre: "Thriller, Mystery",
+      genre: "Drama",
       imageUrl: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=800&h=1200&fit=crop",
     },
     {
       id: "3",
-      title: "Summer Romance",
+      title: "Saiyaara",
       rating: 8.2,
       duration: "1h 55m",
       genre: "Romance, Drama",
@@ -34,7 +34,7 @@ const Movies = () => {
     },
     {
       id: "4",
-      title: "The Last Stand",
+      title: "WAR 2",
       rating: 8.9,
       duration: "2h 45m",
       genre: "Action, War",
@@ -42,7 +42,7 @@ const Movies = () => {
     },
     {
       id: "5",
-      title: "Laugh Out Loud",
+      title: "Coolie",
       rating: 7.5,
       duration: "1h 45m",
       genre: "Comedy",
@@ -50,7 +50,7 @@ const Movies = () => {
     },
     {
       id: "6",
-      title: "Midnight Mystery",
+      title: "Conjuring: Last Rites",
       rating: 8.0,
       duration: "2h 10m",
       genre: "Horror, Thriller",

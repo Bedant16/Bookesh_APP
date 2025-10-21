@@ -48,7 +48,7 @@ const Index = () => {
       type: "event" as const,
       title: "Messi GOAT Tour",
       description: "The GOAT is coming.",
-      imageUrl: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=1920&h=1080&fit=crop",
+      imageUrl: "messih.jpg",
       date: "Jan 15, 2025",
       venue: "Eden Gardens, Kolkata",
       link: "/events",

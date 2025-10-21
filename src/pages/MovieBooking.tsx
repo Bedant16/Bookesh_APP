@@ -47,6 +47,8 @@ const MovieBooking = () => {
   const [selectedShowtime, setSelectedShowtime] = useState<string>("");
   const [selectedDate, setSelectedDate] = useState<string>("Today");
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
+  const [wantsFood, setWantsFood] = useState<boolean | null>(null);
+  const [selectedRestaurant, setSelectedRestaurant] = useState<string | null>(null);
 
   // Mock movie data
   const movie: Movie = {
@@ -162,17 +164,34 @@ const MovieBooking = () => {
     setActiveTab("seats");
   };
 
-  const handleBooking = () => {
+  const handleProceedToFood = () => {
     if (selectedSeats.length === 0) {
       toast.error("Please select at least one seat");
       return;
     }
+    setActiveTab("food");
+  };
+
+  const handleFoodChoice = (choice: boolean) => {
+    setWantsFood(choice);
+    if (!choice) {
+      // Proceed directly to payment if no food wanted
+      handleFinalBooking();
+    }
+  };
+
+  const handleRestaurantSelect = (restaurantName: string) => {
+    setSelectedRestaurant(restaurantName);
+    toast.success(`You can now add items from ${restaurantName} to your cart`);
+  };
+
+  const handleFinalBooking = () => {
     if (!selectedCinema || !selectedShowtime) {
       toast.error("Please select a cinema and showtime");
       return;
     }
 
-    // Add to cart
+    // Add movie booking to cart
     addItem({
       id: `movie-${id}-${Date.now()}`,
       type: "movie",
@@ -182,7 +201,7 @@ const MovieBooking = () => {
       quantity: 1,
     });
 
-    toast.success(`${selectedSeats.length} seats added to cart!`);
+    toast.success("Booking added to cart! Proceed to payment.");
     setIsCartOpen(true);
   };
 
@@ -232,16 +251,20 @@ const MovieBooking = () => {
             </div>
           </div>
 
-          {/* Tabs for Cinema Selection and Seat Selection */}
+          {/* Tabs for Cinema Selection, Seat Selection, and Food */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-6">
+            <TabsList className="grid w-full grid-cols-3 mb-6">
               <TabsTrigger value="cinema" className="flex items-center gap-2">
                 {selectedCinema && <Check className="h-4 w-4" />}
-                Select Cinema & Time
+                Cinema & Time
               </TabsTrigger>
-              <TabsTrigger value="seats" disabled={!selectedCinema}>
+              <TabsTrigger value="seats" disabled={!selectedCinema} className="flex items-center gap-2">
                 {selectedSeats.length > 0 && <Check className="h-4 w-4" />}
-                Select Seats
+                Seats
+              </TabsTrigger>
+              <TabsTrigger value="food" disabled={selectedSeats.length === 0} className="flex items-center gap-2">
+                {wantsFood !== null && <Check className="h-4 w-4" />}
+                Food & Payment
               </TabsTrigger>
             </TabsList>
 
@@ -373,13 +396,130 @@ const MovieBooking = () => {
                 variant="hero"
                 size="lg"
                 className="w-full"
-                onClick={handleBooking}
+                onClick={handleProceedToFood}
                 disabled={selectedSeats.length === 0}
               >
-                Proceed to Payment
+                Continue
               </Button>
                 </div>
               </Card>
+            </TabsContent>
+
+            {/* Food & Payment Tab */}
+            <TabsContent value="food" className="space-y-6">
+              {wantsFood === null ? (
+                <Card className="p-8 bg-gradient-card border-border">
+                  <div className="text-center space-y-6">
+                    <h2 className="text-2xl font-bold text-foreground">Would you like food delivered to your seat?</h2>
+                    <p className="text-muted-foreground">Enjoy delicious meals right at your cinema seat!</p>
+                    <div className="flex gap-4 justify-center">
+                      <Button
+                        variant="default"
+                        size="lg"
+                        onClick={() => handleFoodChoice(true)}
+                        className="min-w-[150px]"
+                      >
+                        Yes, I want food
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="lg"
+                        onClick={() => handleFoodChoice(false)}
+                        className="min-w-[150px]"
+                      >
+                        No, thanks
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              ) : wantsFood ? (
+                <div className="space-y-6">
+                  <Card className="p-6 bg-gradient-card border-border">
+                    <h3 className="text-xl font-bold text-foreground mb-4">Choose a Restaurant</h3>
+                    <p className="text-sm text-muted-foreground mb-6">Select a restaurant to order food from</p>
+                    
+                    <div className="grid gap-4 md:grid-cols-2">
+                      {[
+                        { name: "Burger Palace", cuisine: "Fast Food", image: "https://images.unsplash.com/photo-1550547660-d9450f859349?w=400&h=300&fit=crop" },
+                        { name: "Pizza Corner", cuisine: "Italian", image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop" },
+                        { name: "Snack Hub", cuisine: "Snacks & Beverages", image: "https://images.unsplash.com/photo-1621939514649-280e2ee25f60?w=400&h=300&fit=crop" },
+                        { name: "Asian Delights", cuisine: "Asian Fusion", image: "https://images.unsplash.com/photo-1617093727343-374698b1b08d?w=400&h=300&fit=crop" },
+                      ].map((restaurant) => (
+                        <Card 
+                          key={restaurant.name}
+                          className={`p-4 cursor-pointer transition-smooth hover:shadow-card ${
+                            selectedRestaurant === restaurant.name ? "border-primary" : "border-border"
+                          }`}
+                          onClick={() => handleRestaurantSelect(restaurant.name)}
+                        >
+                          <img 
+                            src={restaurant.image} 
+                            alt={restaurant.name}
+                            className="w-full h-32 object-cover rounded-lg mb-3"
+                          />
+                          <h4 className="font-bold text-foreground">{restaurant.name}</h4>
+                          <p className="text-sm text-muted-foreground">{restaurant.cuisine}</p>
+                          {selectedRestaurant === restaurant.name && (
+                            <Badge className="mt-2">Selected</Badge>
+                          )}
+                        </Card>
+                      ))}
+                    </div>
+
+                    {selectedRestaurant && (
+                      <div className="mt-6 p-4 bg-background/50 rounded-lg">
+                        <p className="text-sm text-muted-foreground mb-3">
+                          Add food items to your cart, then proceed to payment
+                        </p>
+                        <Button
+                          variant="default"
+                          size="lg"
+                          className="w-full"
+                          onClick={handleFinalBooking}
+                        >
+                          Proceed to Payment
+                        </Button>
+                      </div>
+                    )}
+                  </Card>
+                </div>
+              ) : (
+                <Card className="p-8 bg-gradient-card border-border">
+                  <div className="space-y-6">
+                    <h2 className="text-2xl font-bold text-foreground">Booking Summary</h2>
+                    <div className="space-y-3 text-muted-foreground">
+                      <div className="flex justify-between">
+                        <span>Movie:</span>
+                        <span className="font-semibold text-foreground">{movie.title}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Cinema:</span>
+                        <span className="font-semibold text-foreground">{selectedCinema?.name}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Date & Time:</span>
+                        <span className="font-semibold text-foreground">{selectedDate} • {selectedShowtime}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Seats:</span>
+                        <span className="font-semibold text-foreground">{selectedSeats.join(", ")}</span>
+                      </div>
+                      <div className="flex justify-between text-lg pt-3 border-t border-border">
+                        <span className="font-bold text-foreground">Total:</span>
+                        <span className="font-bold text-primary">₹{totalPrice}</span>
+                      </div>
+                    </div>
+                    <Button
+                      variant="hero"
+                      size="lg"
+                      className="w-full"
+                      onClick={handleFinalBooking}
+                    >
+                      Proceed to Payment
+                    </Button>
+                  </div>
+                </Card>
+              )}
             </TabsContent>
           </Tabs>
         </div>

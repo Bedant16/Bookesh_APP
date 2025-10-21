@@ -10,7 +10,7 @@ const Events = () => {
   const events = [
     {
       id: "1",
-      title: "Circux Maximus",
+      title: "Circus Maximus",
       date: "Nov 19, 2025",
       time: "7:00 PM",
       venue: "Mahalaxmi Race Course, Mumbai",

@@ -22,7 +22,7 @@ const Movies = () => {
       rating: 7.8,
       duration: "2h 15m",
       genre: "Drama",
-      imageUrl: "/f1.jpg",
+      imageUrl: "/f12.jpg",
     },
     {
       id: "3",
@@ -30,7 +30,7 @@ const Movies = () => {
       rating: 8.2,
       duration: "1h 55m",
       genre: "Romance, Drama",
-      imageUrl: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800&h=1200&fit=crop",
+      imageUrl: "/saiyaara.jpg",
     },
     {
       id: "4",
@@ -38,7 +38,7 @@ const Movies = () => {
       rating: 8.9,
       duration: "2h 45m",
       genre: "Action, War",
-      imageUrl: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=800&h=1200&fit=crop",
+      imageUrl: "/WAR2.jpg",
     },
     {
       id: "5",
@@ -46,7 +46,7 @@ const Movies = () => {
       rating: 7.5,
       duration: "1h 45m",
       genre: "Comedy",
-      imageUrl: "https://images.unsplash.com/photo-1513106580091-1d82408b8cd6?w=800&h=1200&fit=crop",
+      imageUrl: "/coolie.jpg",
     },
     {
       id: "6",
@@ -54,7 +54,7 @@ const Movies = () => {
       rating: 8.0,
       duration: "2h 10m",
       genre: "Horror, Thriller",
-      imageUrl: "https://images.unsplash.com/photo-1574267432644-f65c78b74820?w=800&h=1200&fit=crop",
+      imageUrl: "/conjuring.jpg",
     },
   ];
 

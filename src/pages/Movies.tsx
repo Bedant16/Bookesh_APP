@@ -10,10 +10,10 @@ const Movies = () => {
   const movies = [
     {
       id: "1",
-      title: "Galactic Heist",
+      title: "DUDE",
       rating: 8.5,
       duration: "2h 30m",
-      genre: "Sci-Fi, Action",
+      genre: "Comedy, Romance",
       imageUrl: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&h=1200&fit=crop",
     },
     {

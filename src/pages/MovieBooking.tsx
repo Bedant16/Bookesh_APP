@@ -196,7 +196,6 @@ const MovieBooking = () => {
 
   const handleProceedToFood = () => {
     if (selectedSeats.length === 0) {
-      toast.error("Please select at least one seat");
       return;
     }
     setActiveTab("food");
@@ -214,7 +213,6 @@ const MovieBooking = () => {
     setSelectedRestaurant(restaurantName);
     setShowMenu(true);
     setFoodQuantities({});
-    toast.success(`Browse ${restaurantName} menu and add items`);
   };
 
   const updateFoodQuantity = (itemId: string, delta: number) => {
@@ -252,16 +250,12 @@ const MovieBooking = () => {
     });
 
     if (itemsAdded > 0) {
-      toast.success(`${itemsAdded} food item(s) added to cart!`);
       setShowMenu(false);
-    } else {
-      toast.error("Please select at least one item");
     }
   };
 
   const handleFinalBooking = () => {
     if (!selectedCinema || !selectedShowtime) {
-      toast.error("Please select a cinema and showtime");
       return;
     }
 
@@ -275,7 +269,6 @@ const MovieBooking = () => {
       quantity: 1,
     });
 
-    toast.success("Booking added to cart! Proceed to payment.");
     setIsCartOpen(true);
   };
 

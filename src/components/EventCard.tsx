@@ -1,9 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Calendar, MapPin, Clock } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useCart } from "@/contexts/CartContext";
-import { useToast } from "@/hooks/use-toast";
 
 interface EventCardProps {
   id: string;
@@ -28,26 +27,11 @@ export const EventCard = ({
   imageUrl,
   price,
 }: EventCardProps) => {
-  const { addItem, setIsCartOpen } = useCart();
-  const { toast } = useToast();
-
+  const navigate = useNavigate();
   const [loaded, setLoaded] = useState(false);
 
   const handleBookTickets = () => {
-    const priceValue = parseInt(price.replace(/[^\d]/g, ""));
-    addItem({
-      id: `event-${id}`,
-      type: "event",
-      title,
-      details: `${date} • ${time} • ${venue}`,
-      price: priceValue,
-      quantity: 1,
-    });
-    toast({
-      title: "Added to cart",
-      description: `${title} ticket added to your cart`,
-    });
-    setIsCartOpen(true);
+    navigate(`/event/${id}`);
   };
 
   function handleImgLoad() {

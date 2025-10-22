@@ -9,7 +9,6 @@ import { Plus, Star, Clock, MapPin, ArrowLeft } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { useToast } from "@/hooks/use-toast";
 
 const RestaurantMenu = () => {
   const { id } = useParams();
@@ -18,7 +17,6 @@ const RestaurantMenu = () => {
   const [deliveryType, setDeliveryType] = useState<"home" | "cinema">("home");
   const [showDeliveryDialog, setShowDeliveryDialog] = useState(false);
   const [selectedFoodItem, setSelectedFoodItem] = useState<any>(null);
-  const { toast } = useToast();
 
   // Mock restaurant data
   const restaurant = {
@@ -61,10 +59,6 @@ const RestaurantMenu = () => {
     };
     addItem(cartItem);
     setShowDeliveryDialog(false);
-    toast({
-      title: "Added to cart",
-      description: `${item.name} for ${type === "cinema" ? "cinema seat" : "home"} delivery`,
-    });
   };
 
   return (

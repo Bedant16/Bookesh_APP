@@ -5,11 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Cart } from "@/components/Cart";
-import { ChevronLeft, Calendar, MapPin, Clock, Check, Users } from "lucide-react";
-import { toast } from "sonner";
+import { ChevronLeft, Calendar, MapPin, Clock, Users } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
-
-type EventType = "Concert" | "Sports" | "Stand up" | "Event";
+import { eventsData, EventType } from "@/data/eventsData";
 type TicketTier = {
   id: string;
   name: string;
@@ -17,34 +15,20 @@ type TicketTier = {
   available: number;
 };
 
-interface EventData {
-  id: string;
-  title: string;
-  date: string;
-  time: string;
-  venue: string;
-  type: EventType;
-  imageUrl: string;
-  description: string;
-}
-
 const EventBooking = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { items, addItem, removeItem, isCartOpen, setIsCartOpen } = useCart();
   const [selectedTickets, setSelectedTickets] = useState<Record<string, number>>({});
 
-  // Mock event data - in real app, fetch based on id
-  const event: EventData = {
-    id: id || "1",
-    title: "Circus Maximus",
-    date: "Nov 19, 2025",
-    time: "7:00 PM",
-    venue: "Mahalaxmi Race Course, Mumbai",
-    type: "Concert",
-    imageUrl: "/travis.jpg",
-    description: "Experience the ultimate music festival with top artists from around the world.",
-  };
+  // Find the event by ID
+  const event = eventsData.find((e) => e.id === id);
+
+  // Redirect if event not found
+  if (!event) {
+    navigate("/events");
+    return null;
+  }
 
   // Ticket tiers based on event type
   const getTicketTiers = (type: EventType): TicketTier[] => {

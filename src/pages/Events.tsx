@@ -2,72 +2,12 @@ import { Header } from "@/components/Header";
 import { EventCard } from "@/components/EventCard";
 import { Cart } from "@/components/Cart";
 import { useCart } from "@/contexts/CartContext";
+import { eventsData } from "@/data/eventsData";
 
 const Events = () => {
   const { items, removeItem, isCartOpen, setIsCartOpen } = useCart();
 
-  const events = [
-    {
-      id: "1",
-      title: "Circus Maximus",
-      date: "Nov 19, 2025",
-      time: "7:00 PM",
-      venue: "Mahalaxmi Race Course, Mumbai",
-      type: "Concert",
-      imageUrl: "/travis.jpg",
-      price: "₹6,999",
-    },
-    {
-      id: "2",
-      title: "Messi GOAT Tour, India",
-      date: "Dec 13, 2025",
-      time: "6:30 PM",
-      venue: "Eden Gardens, Kolkata",
-      type: "Sports",
-      imageUrl: "/messi.jpg",
-      price: "₹7999",
-    },
-    {
-      id: "3",
-      title: "Lollapalooza",
-      date: "Jan 24, 2026",
-      time: "7:00 PM",
-      venue: "Mahalaxmi Race Course, Mumbai",
-      type: "Concert",
-      imageUrl: "/lolla.jpg",
-      price: "₹4999",
-    },
-    {
-      id: "4",
-      title: "Rolling Loud",
-      date: "Jan 10, 2025",
-      time: "6:00 PM",
-      venue: "DY Patil, Navi Mumbai",
-      type: "Concert",
-      imageUrl: "/rollingloud.jpg",
-      price: "₹6,299",
-    },
-    {
-      id: "5",
-      title: "Vir Das India Tour",
-      date: "Jan 15, 2025",
-      time: "6:30 PM",
-      venue: "Chennai",
-      type: "Stand up",
-      imageUrl: "/virdas.jpg",
-      price: "₹1,499",
-    },
-    {
-      id: "6",
-      title: "Royal Enfield Motoverse",
-      date: "Jan 20, 2025",
-      time: "5:00 PM",
-      venue: "Goa",
-      type: "Event",
-      imageUrl: "/re.jpg",
-      price: "₹999",
-    },
-  ];
+  const events = eventsData;
 
   return (
     <div className="min-h-screen bg-background">

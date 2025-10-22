@@ -7,8 +7,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Cart } from "@/components/Cart";
 import { ChevronLeft, Armchair, MapPin, Clock, Calendar, Check, Plus, Minus } from "lucide-react";
-import { toast } from "sonner";
 import { useCart } from "@/contexts/CartContext";
+import { moviesData } from "@/data/moviesData";
 
 type SeatType = "standard" | "premium" | "vip";
 type SeatStatus = "available" | "selected" | "occupied";
@@ -30,14 +30,6 @@ interface Cinema {
   showtimes: string[];
 }
 
-interface Movie {
-  id: string;
-  title: string;
-  genre: string;
-  duration: string;
-  imageUrl: string;
-}
-
 const MovieBooking = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -52,14 +44,14 @@ const MovieBooking = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [foodQuantities, setFoodQuantities] = useState<Record<string, number>>({});
 
-  // Mock movie data
-  const movie: Movie = {
-    id: id || "1",
-    title: "Galactic Heist",
-    genre: "Sci-Fi, Action",
-    duration: "2h 30m",
-    imageUrl: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400&h=600&fit=crop",
-  };
+  // Find the movie by ID
+  const movie = moviesData.find((m) => m.id === id);
+
+  // Redirect if movie not found
+  if (!movie) {
+    navigate("/movies");
+    return null;
+  }
 
   // Mock cinema data
   const cinemas: Cinema[] = [

@@ -7,8 +7,8 @@ import { Cart } from "@/components/Cart";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { HeroCarousel } from "@/components/HeroCarousel";
-import heroImage from "@/assets/galactic-heist-hero.jpg";
-import concertImage from "@/assets/concert-event.jpg";
+import { moviesData } from "@/data/moviesData";
+import { eventsData } from "@/data/eventsData";
 
 const Index = () => {
   const { items, removeItem, isCartOpen, setIsCartOpen } = useCart();
@@ -54,73 +54,8 @@ const Index = () => {
     },
   ];
 
-  const featuredMovies = [
-    {
-      id: "1",
-      title: "DUDE",
-      rating: 8.5,
-      duration: "2h 30m",
-      genre: "Comedy, Romance",
-      imageUrl: "/dude1.jpg",
-    },
-    {
-      id: "2",
-      title: "F1 The Movie",
-      rating: 7.8,
-      duration: "2h 15m",
-      genre: "Drama",
-      imageUrl: "/f12.jpg",
-    },
-    {
-      id: "3",
-      title: "Saiyaara",
-      rating: 8.2,
-      duration: "1h 55m",
-      genre: "Romance, Drama",
-      imageUrl: "/saiyaara.jpg",
-    },
-    {
-      id: "4",
-      title: "WAR 2",
-      rating: 8.9,
-      duration: "2h 45m",
-      genre: "Action, War",
-      imageUrl: "/WAR2.jpg",
-    },
-  ];
-
-  const trendingEvents = [
-    {
-      id: "1",
-      title: "Circus Maximus",
-      date: "Nov 19, 2025",
-      time: "7:00 PM",
-      venue: "Mahalaxmi Race Course, Mumbai",
-      type: "Concert",
-      imageUrl: "/travis.jpg",
-      price: "₹6,999",
-    },
-    {
-      id: "2",
-      title: "Messi GOAT Tour, India",
-      date: "Dec 13, 2025",
-      time: "6:30 PM",
-      venue: "Eden Gardens, Kolkata",
-      type: "Sports",
-      imageUrl: "/messi.jpg",
-      price: "₹7999",
-    },
-    {
-      id: "3",
-      title: "Lollapalooza",
-      date: "Jan 24, 2026",
-      time: "7:00 PM",
-      venue: "Mahalaxmi Race Course, Mumbai",
-      type: "Concert",
-      imageUrl: "/lolla.jpg",
-      price: "₹4999",
-    },
-  ];
+  const featuredMovies = moviesData.slice(0, 4);
+  const trendingEvents = eventsData.slice(0, 3);
 
   const foodVendors = [
     {

@@ -2,60 +2,12 @@ import { Header } from "@/components/Header";
 import { MovieCard } from "@/components/MovieCard";
 import { Cart } from "@/components/Cart";
 import { useCart } from "@/contexts/CartContext";
+import { moviesData } from "@/data/moviesData";
 
 const Movies = () => {
   const { items, removeItem, isCartOpen, setIsCartOpen } = useCart();
 
-  const movies = [
-    {
-      id: "1",
-      title: "DUDE",
-      rating: 8.5,
-      duration: "2h 30m",
-      genre: "Comedy, Romance",
-      imageUrl: "/dude1.jpg",
-    },
-    {
-      id: "2",
-      title: "F1 The Movie",
-      rating: 7.8,
-      duration: "2h 15m",
-      genre: "Drama",
-      imageUrl: "/f12.jpg",
-    },
-    {
-      id: "3",
-      title: "Saiyaara",
-      rating: 8.2,
-      duration: "1h 55m",
-      genre: "Romance, Drama",
-      imageUrl: "/saiyaara.jpg",
-    },
-    {
-      id: "4",
-      title: "WAR 2",
-      rating: 8.9,
-      duration: "2h 45m",
-      genre: "Action, War",
-      imageUrl: "/WAR2.jpg",
-    },
-    {
-      id: "5",
-      title: "Coolie",
-      rating: 7.5,
-      duration: "1h 45m",
-      genre: "Comedy",
-      imageUrl: "/coolie.jpg",
-    },
-    {
-      id: "6",
-      title: "Conjuring: Last Rites",
-      rating: 8.0,
-      duration: "2h 10m",
-      genre: "Horror, Thriller",
-      imageUrl: "/conjuring.jpg",
-    },
-  ];
+  const movies = moviesData;
 
   return (
     <div className="min-h-screen bg-background">

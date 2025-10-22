@@ -1,5 +1,4 @@
 import { Header } from "@/components/Header";
-import { Sidebar } from "@/components/Sidebar";
 import { MovieCard } from "@/components/MovieCard";
 import { Cart } from "@/components/Cart";
 import { useCart } from "@/contexts/CartContext";
@@ -63,10 +62,7 @@ const Movies = () => {
       <Header cartItemsCount={items.length} onCartClick={() => setIsCartOpen(true)} />
       
       <div className="container py-6">
-        <div className="flex gap-6">
-          <Sidebar />
-          
-          <main className="flex-1">
+        <main>
             <div className="space-y-6">
               <div>
                 <h1 className="text-3xl font-bold text-foreground mb-2">Now Showing</h1>
@@ -79,8 +75,7 @@ const Movies = () => {
                 ))}
               </div>
             </div>
-          </main>
-        </div>
+        </main>
       </div>
 
       <Cart

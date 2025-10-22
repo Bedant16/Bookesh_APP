@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { Header } from "@/components/Header";
-import { Sidebar } from "@/components/Sidebar";
 import { MovieCard } from "@/components/MovieCard";
 import { EventCard } from "@/components/EventCard";
 import { FoodCard } from "@/components/FoodCard";
@@ -158,10 +157,7 @@ const Index = () => {
       <Header cartItemsCount={items.length} onCartClick={() => setIsCartOpen(true)} />
       
       <div className="container py-6">
-        <div className="flex gap-6">
-          <Sidebar />
-          
-          <main className="flex-1 space-y-12">
+        <main className="space-y-12">
             {/* Hero Carousel */}
             <HeroCarousel items={heroItems} />
 
@@ -218,8 +214,7 @@ const Index = () => {
                 ))}
               </div>
             </section>
-          </main>
-        </div>
+        </main>
       </div>
 
       <Cart

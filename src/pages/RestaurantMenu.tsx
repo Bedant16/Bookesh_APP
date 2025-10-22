@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
-import { Sidebar } from "@/components/Sidebar";
 import { Cart } from "@/components/Cart";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -73,10 +72,7 @@ const RestaurantMenu = () => {
       <Header cartItemsCount={items.length} onCartClick={() => setIsCartOpen(true)} />
       
       <div className="container py-6">
-        <div className="flex gap-6">
-          <Sidebar />
-          
-          <main className="flex-1 space-y-6">
+        <main className="space-y-6">
             <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back
@@ -142,8 +138,7 @@ const RestaurantMenu = () => {
                 ))}
               </div>
             </div>
-          </main>
-        </div>
+        </main>
       </div>
 
       {/* Delivery Type Dialog */}

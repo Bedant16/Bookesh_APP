@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Search, ShoppingCart, Film, LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 interface HeaderProps {
   cartItemsCount?: number;
@@ -11,6 +12,17 @@ interface HeaderProps {
 
 export const Header = ({ cartItemsCount = 0, onCartClick }: HeaderProps) => {
   const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleSignOut = async () => {
+    await signOut();
+    toast({
+      title: "Signed out",
+      description: "You've been successfully signed out.",
+    });
+    navigate("/");
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -60,14 +72,19 @@ export const Header = ({ cartItemsCount = 0, onCartClick }: HeaderProps) => {
           </Button>
 
           {user ? (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={signOut}
-              title="Sign Out"
-            >
-              <LogOut className="h-5 w-5" />
-            </Button>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground hidden md:block">
+                {user.email}
+              </span>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleSignOut}
+                title="Sign Out"
+              >
+                <LogOut className="h-5 w-5" />
+              </Button>
+            </div>
           ) : (
             <Link to="/auth">
               <Button variant="ghost" size="icon" title="Sign In">

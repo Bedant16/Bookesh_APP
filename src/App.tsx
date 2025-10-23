@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "./contexts/CartContext";
 import { AuthProvider } from "./contexts/AuthContext";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 import Index from "./pages/Index";
 import Movies from "./pages/Movies";
 import Events from "./pages/Events";
@@ -27,13 +28,13 @@ const App = () => (
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
-              <Route path="/movies" element={<Movies />} />
-              <Route path="/events" element={<Events />} />
-              <Route path="/food" element={<Food />} />
-              <Route path="/food/:id" element={<RestaurantMenu />} />
-              <Route path="/movie/:id" element={<MovieBooking />} />
-              <Route path="/event/:id" element={<EventBooking />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/movies" element={<ProtectedRoute><Movies /></ProtectedRoute>} />
+              <Route path="/events" element={<ProtectedRoute><Events /></ProtectedRoute>} />
+              <Route path="/food" element={<ProtectedRoute><Food /></ProtectedRoute>} />
+              <Route path="/food/:id" element={<ProtectedRoute><RestaurantMenu /></ProtectedRoute>} />
+              <Route path="/movie/:id" element={<ProtectedRoute><MovieBooking /></ProtectedRoute>} />
+              <Route path="/event/:id" element={<ProtectedRoute><EventBooking /></ProtectedRoute>} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

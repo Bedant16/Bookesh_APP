@@ -85,7 +85,7 @@ const MovieBooking = () => {
     },
   ];
 
-  const dates = ["Today", "Tomorrow", "Dec 22", "Dec 23", "Dec 24"];
+  const dates = ["Today", "Tomorrow", "Oct 23", " Oct 24", "Oct 25" , "Oct 26"];
 
   // Mock restaurant menu data
   const restaurantMenus: Record<string, Array<{ id: string; name: string; price: number; image: string; description: string }>> = {

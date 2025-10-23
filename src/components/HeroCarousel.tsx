@@ -61,11 +61,11 @@ export const HeroCarousel = ({ items }: HeroCarouselProps) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <Carousel setApi={setApi} opts={{ loop: true }}>
-        <CarouselContent>
+      <Carousel setApi={setApi} opts={{ loop: true }} className="overflow-hidden rounded-2xl">
+        <CarouselContent className="-ml-0">
           {items.map((item) => (
-            <CarouselItem key={item.id}>
-              <section className="relative h-[500px] rounded-2xl overflow-hidden shadow-glow">
+            <CarouselItem key={item.id} className="pl-0">
+              <section className="relative h-[500px] overflow-hidden shadow-glow">
                 <img
                   src={item.imageUrl}
                   alt={item.title}
@@ -116,8 +116,12 @@ export const HeroCarousel = ({ items }: HeroCarouselProps) => {
           ))}
         </CarouselContent>
 
+        {/* Fade Edges */}
+        <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-background to-transparent pointer-events-none z-10" />
+        <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-background to-transparent pointer-events-none z-10" />
+
         {/* Navigation Buttons - Show on Hover */}
-        <div className={`absolute inset-0 pointer-events-none transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
+        <div className={`absolute inset-0 pointer-events-none transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'} z-20`}>
           <button
             onClick={scrollPrev}
             className="pointer-events-auto absolute left-4 top-1/2 -translate-y-1/2 h-12 w-12 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-background transition-smooth flex items-center justify-center group/btn"

@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
-import { Search, ShoppingCart, Film, Calendar, UtensilsCrossed } from "lucide-react";
+import { Search, ShoppingCart, Film, LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface HeaderProps {
   cartItemsCount?: number;
@@ -9,6 +10,8 @@ interface HeaderProps {
 }
 
 export const Header = ({ cartItemsCount = 0, onCartClick }: HeaderProps) => {
+  const { user, signOut } = useAuth();
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
@@ -55,6 +58,23 @@ export const Header = ({ cartItemsCount = 0, onCartClick }: HeaderProps) => {
               </span>
             )}
           </Button>
+
+          {user ? (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={signOut}
+              title="Sign Out"
+            >
+              <LogOut className="h-5 w-5" />
+            </Button>
+          ) : (
+            <Link to="/auth">
+              <Button variant="ghost" size="icon" title="Sign In">
+                <User className="h-5 w-5" />
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </header>

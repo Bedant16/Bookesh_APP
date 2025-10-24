@@ -89,25 +89,25 @@ const MovieBooking = () => {
 
   // Mock restaurant menu data
   const restaurantMenus: Record<string, Array<{ id: string; name: string; price: number; image: string; description: string }>> = {
-    "KFC": [
+    "Burger Palace": [
       { id: "bp1", name: "Classic Burger", price: 250, image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300&h=200&fit=crop", description: "Juicy beef patty with cheese" },
       { id: "bp2", name: "Chicken Burger", price: 230, image: "https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=300&h=200&fit=crop", description: "Crispy chicken fillet" },
       { id: "bp3", name: "Veggie Burger", price: 200, image: "https://images.unsplash.com/photo-1520072959219-c595dc870360?w=300&h=200&fit=crop", description: "Plant-based patty" },
       { id: "bp4", name: "French Fries", price: 100, image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=300&h=200&fit=crop", description: "Crispy golden fries" },
     ],
-    "Domino's Pizza": [
+    "Pizza Corner": [
       { id: "pc1", name: "Margherita Pizza", price: 350, image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=300&h=200&fit=crop", description: "Classic tomato and mozzarella" },
       { id: "pc2", name: "Pepperoni Pizza", price: 450, image: "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=300&h=200&fit=crop", description: "Loaded with pepperoni" },
       { id: "pc3", name: "Veggie Supreme", price: 400, image: "https://images.unsplash.com/photo-1571997478779-2adcbbe9ab2f?w=300&h=200&fit=crop", description: "Fresh vegetables galore" },
       { id: "pc4", name: "Garlic Bread", price: 150, image: "https://images.unsplash.com/photo-1573140401552-3fab0b24f9ae?w=300&h=200&fit=crop", description: "Buttery garlic bread" },
     ],
-    "PVR": [
+    "Snack Hub": [
       { id: "sh1", name: "Popcorn (Large)", price: 200, image: "https://images.unsplash.com/photo-1585647347483-22b66260dfff?w=300&h=200&fit=crop", description: "Buttered or salted" },
       { id: "sh2", name: "Nachos", price: 250, image: "https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?w=300&h=200&fit=crop", description: "With cheese dip" },
       { id: "sh3", name: "Hot Dog", price: 150, image: "https://images.unsplash.com/photo-1612392062422-ef19b42f74df?w=300&h=200&fit=crop", description: "Classic cinema hot dog" },
       { id: "sh4", name: "Soft Drink", price: 80, image: "https://images.unsplash.com/photo-1581006852262-e4307cf6283a?w=300&h=200&fit=crop", description: "Chilled beverages" },
     ],
-    "Wow Momo!": [
+    "Asian Delights": [
       { id: "ad1", name: "Chicken Noodles", price: 280, image: "https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?w=300&h=200&fit=crop", description: "Stir-fried noodles" },
       { id: "ad2", name: "Spring Rolls", price: 180, image: "https://images.unsplash.com/photo-1560611588-0c4e3c7e5b51?w=300&h=200&fit=crop", description: "Crispy vegetable rolls" },
       { id: "ad3", name: "Fried Rice", price: 250, image: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=300&h=200&fit=crop", description: "Classic fried rice" },
